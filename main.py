@@ -6,11 +6,15 @@ Cargar_Csv = load_data(Ruta_Csv)
 
 print(Cargar_Csv.head())
 
-Dates = Cargar_Csv['date']
+print (f'-------- Iniciamos aqui --------------')
 
-print (f'--------')
+Fecha_Objetivo = '2025-01-04'
 
-print (f'{Dates}')
+for indice, venta in Cargar_Csv.iterrows():
+    Fecha = venta['date']
+    Producto = venta['product']
+    Cantidad = venta['quantity']
+    Precio = venta['price']
 
-for elemento in enumerate(Dates):
-    print (f'{elemento[1]}')
+    if (Fecha == Fecha_Objetivo):
+        print (f'{venta}')
