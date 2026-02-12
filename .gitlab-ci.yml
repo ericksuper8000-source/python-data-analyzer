@@ -1,0 +1,19 @@
+# 1. Qué entorno usará el Runner (Python versión 3.11)
+image: python:3.11-slim
+
+# 2. Qué etapas tendrá nuestro Pipeline
+stages:
+  - build
+  - test
+
+# 3. Primer trabajo: Instalar todo lo que pusiste en tu requirements.txt
+instalar_dependencias:
+  stage: build
+  script:
+    - pip install -r requirements.txt
+
+# 4. Segundo trabajo: Verificar que tu código esté bien
+ejecutar_pruebas:
+  stage: test
+  script:
+    - pytest
