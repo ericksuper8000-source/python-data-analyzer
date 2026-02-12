@@ -16,4 +16,5 @@ instalar_dependencias:
 ejecutar_pruebas:
   stage: test
   script:
+    - pip install -r requirements.txt  # <--- AGREGA ESTA LÍNEA AQUÍ
     - pytest
