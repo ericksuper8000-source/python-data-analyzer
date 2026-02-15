@@ -1,3 +1,3 @@
 # Python Data Analyzer
 
-A Python project for analyzing CSV data using Pandas. 01/20/26
+A small but realistic simulation of how a junior Python developer works with data in a professional environment.
