@@ -8,4 +8,7 @@ def load_data(file_path):
     :return: DataFrame with sales data
     '''
 
-    return pd.read_csv(file_path, sep=None, engine='python')
+    df = pd.read_csv(file_path, sep=None, engine='python')
+    df['date'] = pd.to_datetime(df['date']).dt.date
+
+    return df
