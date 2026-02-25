@@ -4,8 +4,8 @@ from datetime import datetime
 # Cargar datos
 Cargar_Csv = load_data('data/sales.csv')
 
-# Pedir fecha al usuario
-fecha_input = input('Ingrese la fecha (YYYY-MM-DD): ') # 2025-01-04
+# Pedir fecha
+fecha_input = input('Ingrese la fecha (YYYY-MM-DD): ')
 
 try:
     Fecha_Objetivo = datetime.strptime(fecha_input, "%Y-%m-%d").date()
@@ -13,8 +13,8 @@ except ValueError:
     print("Formato de fecha inválido")
     exit()
 
-# Buscar ventas
 Encontrado = False
+Lista_Sumatoria = []
 
 for indice, venta in Cargar_Csv.iterrows():
 
@@ -27,6 +27,12 @@ for indice, venta in Cargar_Csv.iterrows():
         print(f'Precio: {venta["price"]}')
         print('------------------')
 
-# Caso donde no hubo coincidencias
-if not Encontrado:
+        Total = venta["quantity"] * venta["price"]
+        Lista_Sumatoria.append(Total)
+
+# Aqui se realiza la suma
+if Encontrado:
+    Resultado = sum(Lista_Sumatoria)
+    print(f'Total vendido en el día: ${Resultado}')
+else:
     print('No hay ventas en esa fecha')
