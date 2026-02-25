@@ -1,0 +1,9 @@
+image: python:3.11
+# GitLab crea una computadora temporal con Python 3.11
+
+run:
+  # Nombre del job
+  script:
+    # Comandos que ejecuta GitLab
+    - python test_main.py
+    # Ejecuta el archivo test_main.py, Python lee el archivo de arriba a abajo, Si todo va bien pipeline verde, si no pipeline rojo
