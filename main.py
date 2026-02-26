@@ -8,13 +8,17 @@ Cargar_Csv = load_data('data/sales.csv')
 fecha_input = input('Ingrese la fecha (YYYY-MM-DD): ')
 
 try:
-    Fecha_Objetivo = datetime.strptime(fecha_input, "%Y-%m-%d").date()
+    Fecha_Objetivo = datetime.strptime(fecha_input, "%Y-%m-%d").date() #2025-01-04
 except ValueError:
     print("Formato de fecha inválido")
     exit()
 
 Encontrado = False
-Lista_Sumatoria = []
+total_dia = 0
+total_prod_vendidos = 0
+
+# Diccionario para acumular ventas por producto
+ventas_por_producto = dict({})
 
 for indice, venta in Cargar_Csv.iterrows():
 
@@ -27,12 +31,29 @@ for indice, venta in Cargar_Csv.iterrows():
         print(f'Precio: {venta["price"]}')
         print('------------------')
 
-        Total = venta["quantity"] * venta["price"]
-        Lista_Sumatoria.append(Total)
+        # Acumuladores anteriores
+        total_dia += venta["quantity"] * venta["price"]
+        total_prod_vendidos += venta["quantity"]
 
-# Aqui se realiza la suma
+        # Acumulación por producto
+        producto = venta["product"]
+        cantidad = venta["quantity"]
+
+        if producto in ventas_por_producto:
+            ventas_por_producto[producto] += cantidad
+        else:
+            ventas_por_producto[producto] = cantidad
+
+# Resultados finales
 if Encontrado:
-    Resultado = sum(Lista_Sumatoria)
-    print(f'Total vendido en el día: ${Resultado}')
+
+    # Buscar producto más vendido
+    producto_mas_vendido = max(ventas_por_producto, key=ventas_por_producto.get)
+    max_cantidad = ventas_por_producto[producto_mas_vendido]
+
+    print(f'Total vendido en el día: ${total_dia}')
+    print(f'Total productos vendidos en el día: {total_prod_vendidos}')
+    print(f'Producto más vendido: {producto_mas_vendido} ({max_cantidad} unidades)')
+
 else:
     print('No hay ventas en esa fecha')
