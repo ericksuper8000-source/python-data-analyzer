@@ -4,8 +4,8 @@ from datetime import datetime
 # Cargar datos
 Cargar_Csv = load_data('data/sales.csv')
 
-# Pedir fecha al usuario
-fecha_input = input('Ingrese la fecha (YYYY-MM-DD): ') # 2025-01-04
+# Pedir fecha
+fecha_input = input('Ingrese la fecha (YYYY-MM-DD): ')
 
 try:
     Fecha_Objetivo = datetime.strptime(fecha_input, "%Y-%m-%d").date()
@@ -13,20 +13,21 @@ except ValueError:
     print("Formato de fecha inválido")
     exit()
 
-# Buscar ventas
-Encontrado = False
+# Filtrado vectorizado
+ventas_dia = Cargar_Csv[Cargar_Csv['date'] == Fecha_Objetivo]
 
-for indice, venta in Cargar_Csv.iterrows():
+if ventas_dia.empty:
+    print("No hay ventas en esa fecha")
+else:
+    # Métricas vectorizadas
+    total_dia = (ventas_dia['quantity'] * ventas_dia['price']).sum()
+    total_unidades = ventas_dia['quantity'].sum()
 
-    if venta['date'] == Fecha_Objetivo:
-        Encontrado = True
+    # Producto más vendido usando groupby
+    ventas_por_producto = ventas_dia.groupby("product")["quantity"].sum()
+    producto_mas_vendido = ventas_por_producto.idxmax()
+    max_cantidad = ventas_por_producto.max()
 
-        print(f'Fecha: {venta["date"]}')
-        print(f'Producto: {venta["product"]}')
-        print(f'Cantidad: {venta["quantity"]}')
-        print(f'Precio: {venta["price"]}')
-        print('------------------')
-
-# Caso donde no hubo coincidencias
-if not Encontrado:
-    print('No hay ventas en esa fecha')
+    print(f'Total de productos vendidos en ({Fecha_Objetivo}): {total_unidades}')
+    print(f'Total vendido en ({Fecha_Objetivo}): ${total_dia}')
+    print(f'Producto más vendido: {producto_mas_vendido} ({max_cantidad} unidades)')
