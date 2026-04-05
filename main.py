@@ -1,5 +1,6 @@
 from src.load_data import load_data
 from datetime import datetime
+import matplotlib.pyplot as plt
 
 # Load dataset
 sales_df = load_data("data/sales.csv")
@@ -52,3 +53,14 @@ else:
     print(f"Total revenue on ({target_date}): ${total_sales}")
     print(f"Best selling product: {best_selling_product} ({max_quantity} units)")
 
+
+product_units = sales_df.groupby('product')['quantity'].sum()
+product_units_sorted = product_units.sort_values(ascending=False)
+
+product_units_sorted.plot(kind="bar")
+
+plt.title("Units Sold by Product")
+plt.xlabel("Product")
+plt.ylabel("Units Sold")
+
+plt.show()
